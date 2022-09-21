@@ -9,19 +9,19 @@ def signal_handler(sig, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 import os
-import pickle
-from .const import *
+from .const import CONFIG_FOLDER_PATH
+from .projects import set_default_editor
 
 
 def check_for_initiation():
     if os.path.exists(CONFIG_FOLDER_PATH):
         return
-    from .projects import set_default_editor
+
     os.mkdir(CONFIG_FOLDER_PATH)
-    with open(PROJECTS_FILE_PATH, "wb") as f:
-        pickle.dump([], f)
+
     default_editor = input('Your Default Editor (press enter to use code): ')
     set_default_editor(default_editor if default_editor != '' else 'code')
+
     print('Done.')
     sys.exit()
 
@@ -58,6 +58,5 @@ class Project(object):
 
 def main():
     check_for_initiation()
-    from .cli import cli
+    from .cli import cli # It has to be here
     cli()
-
