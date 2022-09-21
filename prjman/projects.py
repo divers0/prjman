@@ -1,5 +1,4 @@
 import os
-from . import Project
 from .const import DEFAULT_EDITOR_FILE_PATH
 
 
@@ -24,3 +23,33 @@ def get_default_editor():
 def set_default_editor(new_editor):
     with open(DEFAULT_EDITOR_FILE_PATH, 'w') as f:
         f.write(new_editor)
+
+
+class Project(object):
+    def __init__(self, name: str, path: str, project_category: str):
+        self.NAME = name
+        self._path = path
+        self._project_category = project_category
+
+    def __repr__(self) -> str:
+        return f"Project(name={self.name}, path={self.path}, project_category={self.project_category})"
+
+    @property
+    def name(self):
+        return self.NAME
+
+    @property
+    def path(self):
+        return self._path
+
+    @path.setter
+    def path(self, path):
+        self._path = path
+
+    @property
+    def project_category(self):
+        return self._project_category
+
+    @project_category.setter
+    def project_category(self, project_category):
+        self._project_category = project_category
