@@ -11,8 +11,8 @@ signal.signal(signal.SIGINT, signal_handler)
 
 import os
 from .utils import get_shellrc_file
-from .const import CONFIG_FOLDER_PATH
 from .projects import set_default_editor
+from .const import CONFIG_FOLDER_PATH, INITIAL_SHELLRC_STRING, INITIATED_SHELLRC_STRING
 
 
 def check_for_initiation():
@@ -32,24 +32,13 @@ def check_for_initiation():
     sys.exit()
 
 
-initial_shellrc_string = f"""\n
-prjman() {{
-    projman
-}}
-"""
-
 def check_for_command_in_shellrc():
-    new_shellrc_string = f"""\n
-prjman() {{
-    eval $(projman "$@")
-}}
-"""
     shellrc_file_path, shellrc_file = get_shellrc_file()
-    if new_shellrc_string not in shellrc_file:
-        if initial_shellrc_string in shellrc_file:
-            shellrc_file = shellrc_file.replace(initial_shellrc_string, new_shellrc_string)
+    if INITIATED_SHELLRC_STRING not in shellrc_file:
+        if INITIAL_SHELLRC_STRING in shellrc_file:
+            shellrc_file = shellrc_file.replace(INITIAL_SHELLRC_STRING, INITIATED_SHELLRC_STRING)
         else:
-            shellrc_file += new_shellrc_string
+            shellrc_file += INITIATED_SHELLRC_STRING
         with open(shellrc_file_path, 'w') as f:
             f.write(shellrc_file)
 

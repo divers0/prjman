@@ -1,16 +1,16 @@
 from prjman.utils import get_shellrc_file
-from prjman import initial_shellrc_string
 from setuptools import setup, find_packages
+from prjman.const import INITIAL_SHELLRC_STRING, INITIATED_SHELLRC_STRING
 
 
-VERSION = "0.2.0"
+VERSION = "0.2.2"
 
 
 def check_for_command_in_shellrc():
     shellrc_file_path, shellrc_file = get_shellrc_file()
 
-    if initial_shellrc_string not in shellrc_file:
-        shellrc_file += initial_shellrc_string
+    if INITIAL_SHELLRC_STRING not in shellrc_file and INITIATED_SHELLRC_STRING not in shellrc_file:
+        shellrc_file += INITIAL_SHELLRC_STRING
         with open(shellrc_file_path, 'w') as f:
             f.write(shellrc_file)
         print(f"Please enter 'source {'~/'+shellrc_file_path.split('/')[-1]}'"

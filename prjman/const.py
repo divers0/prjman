@@ -5,6 +5,18 @@ CONFIG_FOLDER_PATH = os.path.join(os.path.expanduser("~"), ".config", "prjman")
 
 DEFAULT_EDITOR_FILE_PATH = os.path.join(CONFIG_FOLDER_PATH, 'default_editor')
 
+INITIAL_SHELLRC_STRING = f"""\n
+prjman() {{
+    projman
+}}
+"""
+
+INITIATED_SHELLRC_STRING = f"""\n
+prjman() {{
+    eval $(projman "$@")
+}}
+"""
+
 # stolen from the rich python package
 ANSI_COLOR_NAMES = {
  'aquamarine1': 122,
