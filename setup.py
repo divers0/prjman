@@ -8,7 +8,7 @@ VERSION = "0.2.5"
 
 def check_for_command_in_shellrc():
     shellrc_file_path, shellrc_file = get_shellrc_file()
-    sign_of_prjman_alias = "alias prjman="
+    sign_of_prjman_alias = ("alias prjman=", "alias projman=")
 
     if INITIAL_SHELLRC_STRING not in shellrc_file and INITIATED_SHELLRC_STRING not in shellrc_file:
         shellrc_file += INITIAL_SHELLRC_STRING
