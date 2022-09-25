@@ -2,6 +2,7 @@ import click
 import subprocess
 from .utils import colorize
 from .projects import get_default_editor, set_default_editor, find_all_projects
+from .config_file import get_paths
 
 
 @click.command()
@@ -15,9 +16,14 @@ def cli(command, value, new_editor, exclude_dir):
         set_default_editor(new_editor)
         command = new_editor
 
-    path = "/home/diverso/p"
 
-    projects = find_all_projects(path, [x for x in ','.join(exclude_dir).split(',') if x != ''])
+    paths = get_paths()
+
+    projects = []
+    for path in paths:
+        for project in find_all_projects(path, [x for x in ','.join(exclude_dir).split(',') if x != '']):
+            projects.append(project)
+
     projects_names = '\n'.join(sorted([colorize(projects[x].name, 'green')+' '*(len(sorted([x.name for x in projects], key=lambda x: len(x), reverse=True)[0]+' ')-len(projects[x].name))+colorize(projects[x].path, 'blue') for x, _ in enumerate(projects)]))
 
     fzf_args = ["--ansi", "--height 70%", "--reverse", "--no-hscroll", "--border", "--margin=1", "--padding=1", "--color bg:#222222"]
