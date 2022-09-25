@@ -8,13 +8,16 @@ from .projects import get_default_editor, set_default_editor, find_all_projects
 @click.argument('command', default=get_default_editor())
 @click.option('-v', '--value')
 @click.option('--change-editor', 'new_editor')
-def cli(command, value, new_editor):
+@click.option('--exclude-dir', multiple=True)
+def cli(command, value, new_editor, exclude_dir):
 
     if new_editor:
         set_default_editor(new_editor)
         command = new_editor
 
-    projects = find_all_projects()
+    path = "/home/diverso/p"
+
+    projects = find_all_projects(path, [x for x in ','.join(exclude_dir).split(',') if x != ''])
     projects_names = '\n'.join(sorted([colorize(projects[x].name, 'green')+' '*(len(sorted([x.name for x in projects], key=lambda x: len(x), reverse=True)[0]+' ')-len(projects[x].name))+colorize(projects[x].path, 'blue') for x, _ in enumerate(projects)]))
 
     fzf_args = ["--ansi", "--height 70%", "--reverse", "--no-hscroll", "--border", "--margin=1", "--padding=1", "--color bg:#222222"]
