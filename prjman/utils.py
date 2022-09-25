@@ -17,3 +17,7 @@ def get_shellrc_file():
 def change_items_index(l, item, new_index):
     l.remove(item)
     l.insert(new_index, item)
+
+
+def validate_multi_value_options(option_value):
+    return [x for x in ','.join(option_value).split(',') if x != '']

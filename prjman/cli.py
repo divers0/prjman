@@ -1,16 +1,18 @@
+import os
 import click
 import subprocess
-from .utils import colorize
-from .projects import get_default_editor, set_default_editor, find_all_projects
 from .config_file import get_paths
+from .utils import colorize, validate_multi_value_options
+from .projects import get_default_editor, set_default_editor, find_all_projects, Project
 
 
 @click.command()
 @click.argument('command', default=get_default_editor())
 @click.option('-v', '--value')
 @click.option('--change-editor', 'new_editor')
-@click.option('--exclude-dir', multiple=True)
-def cli(command, value, new_editor, exclude_dir):
+@click.option('-i', '--include-dir', multiple=True)
+@click.option('-x', '--exclude-dir', multiple=True)
+def cli(command, value, new_editor, include_dir, exclude_dir):
 
     if new_editor:
         set_default_editor(new_editor)
@@ -18,11 +20,19 @@ def cli(command, value, new_editor, exclude_dir):
 
 
     paths = get_paths()
-
     projects = []
+
+    # Adding include_dirs
+    for include in validate_multi_value_options(include_dir):
+        for prj_dir in os.listdir(include):
+            projects.append(Project(prj_dir, os.path.join(include, prj_dir)))
+
     for path in paths:
-        for project in find_all_projects(path, [x for x in ','.join(exclude_dir).split(',') if x != '']):
+        for project in find_all_projects(path, validate_multi_value_options(exclude_dir)):
             projects.append(project)
+
+    # Removing duplicates
+    projects = list(set(projects))
 
     projects_names = '\n'.join(sorted([colorize(projects[x].name, 'green')+' '*(len(sorted([x.name for x in projects], key=lambda x: len(x), reverse=True)[0]+' ')-len(projects[x].name))+colorize(projects[x].path, 'blue') for x, _ in enumerate(projects)]))
 
