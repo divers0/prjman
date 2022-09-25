@@ -4,7 +4,7 @@ a project viewer
 **this program only works on linux**\
 run
 ```
-./install.sh | source /dev/stdin
+python configure.py && ./install.sh | source /dev/stdin
 ```
 ## Uninstall
 run
