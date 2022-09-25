@@ -17,5 +17,7 @@ def get_paths():
     return read_config_file()['paths']
 
 
-def add_to_paths():
-    ...
+def add_to_paths(new_paths):
+    config_file = read_config_file()
+    config_file['paths'] += new_paths
+    write_to_config_file(config_file)

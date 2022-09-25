@@ -4,4 +4,4 @@
  - [x] remove the project_category attribute because it does nothing
  - [x] get the main projects directory(s) from the user. in my case is /home/diverso/p
  - [x] add --include-dir
- - [ ] add --add-path
+ - [x] add --add-path

@@ -1,7 +1,7 @@
 import os
 import click
 import subprocess
-from .config_file import get_paths
+from .config_file import get_paths, add_to_paths
 from .utils import colorize, validate_multi_value_options
 from .projects import get_default_editor, set_default_editor, find_all_projects, Project
 
@@ -9,15 +9,23 @@ from .projects import get_default_editor, set_default_editor, find_all_projects,
 @click.command()
 @click.argument('command', default=get_default_editor())
 @click.option('-v', '--value')
+@click.option('-a', '--add-path', multiple=True)
 @click.option('--change-editor', 'new_editor')
 @click.option('-i', '--include-dir', multiple=True)
 @click.option('-x', '--exclude-dir', multiple=True)
-def cli(command, value, new_editor, include_dir, exclude_dir):
+def cli(command, value, add_path, new_editor, include_dir, exclude_dir):
 
     if new_editor:
         set_default_editor(new_editor)
         command = new_editor
 
+    if add_path:
+        new_paths = validate_multi_value_options(add_path)
+        for new_path in new_paths:
+            if not os.path.isdir(new_path):
+                print(f"'{new_path}' is not a directory.")
+                return
+        add_to_paths(new_paths)
 
     paths = get_paths()
     projects = []
