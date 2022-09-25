@@ -12,3 +12,8 @@ def get_shellrc_file():
     with open(shellrc_file_path, 'r') as f:
         shellrc_file = f.read()
     return shellrc_file_path, shellrc_file
+
+
+def change_items_index(l, item, new_index):
+    l.remove(item)
+    l.insert(new_index, item)

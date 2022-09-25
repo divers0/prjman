@@ -1,9 +1,7 @@
 import os
 
 
-CONFIG_FOLDER_PATH = os.path.join(os.path.expanduser("~"), ".config", "prjman")
-
-DEFAULT_EDITOR_FILE_PATH = os.path.join(CONFIG_FOLDER_PATH, 'default_editor')
+CONFIG_FILE_PATH = os.path.join(os.path.expanduser("~"), ".config", "prjman")
 
 INITIAL_SHELLRC_STRING = f"""\n
 prjman() {{

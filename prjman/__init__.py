@@ -10,20 +10,43 @@ def signal_handler(sig, frame):
 signal.signal(signal.SIGINT, signal_handler)
 
 import os
+import readline
 from .utils import get_shellrc_file
-from .projects import set_default_editor
-from .const import CONFIG_FOLDER_PATH, INITIAL_SHELLRC_STRING, INITIATED_SHELLRC_STRING
+from .config_file import write_to_config_file
+from .const import CONFIG_FILE_PATH, INITIAL_SHELLRC_STRING, INITIATED_SHELLRC_STRING
 
 
 def check_for_initiation():
-    if os.path.exists(CONFIG_FOLDER_PATH):
+    if os.path.exists(CONFIG_FILE_PATH):
         return
 
-    os.mkdir(CONFIG_FOLDER_PATH)
+    try:
+        default_editor = input('Your Default Editor (leave blank to use code): ')
+    except EOFError:
+        sys.exit(1)
 
-    default_editor = input('Your Default Editor (press enter to use code): ')
-    set_default_editor(default_editor if default_editor != '' else 'code')
+    paths = []
+    while True:
+        try:
+            path = input("Enter a path to search for projects (leave blank if you are done): ")
+        except EOFError:
+            sys.exit(1)
+        if path == '':
+            if paths == []:
+                print("You have to enter at least one path.")
+                continue
+            break
+        if os.path.isdir(path):
+            paths.append(os.path.abspath(path))
+        else:
+            print(f"'{path}' is not a directory.")
 
+    config_file = {
+        "paths": paths,
+        "default_editor": default_editor if default_editor != '' else 'code'
+    }
+
+    write_to_config_file(config_file)
 
     shellrc_file_path, _ = get_shellrc_file()
     print(f"Please enter 'source {'~/'+shellrc_file_path.split('/')[-1]}'"
@@ -46,5 +69,5 @@ def check_for_command_in_shellrc():
 def main():
     check_for_command_in_shellrc()
     check_for_initiation()
-    from .cli import cli # It has to be here
+    from .cli import cli # It has to be here or it will raise an error
     cli()

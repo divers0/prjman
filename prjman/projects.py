@@ -1,5 +1,5 @@
 import os
-from .const import DEFAULT_EDITOR_FILE_PATH
+from .config_file import read_config_file, write_to_config_file
 
 
 def find_all_projects(path, ignore):
@@ -23,14 +23,13 @@ def _scan_for_projects(path, ignore, paths=[]):
 
 
 def get_default_editor():
-    with open(DEFAULT_EDITOR_FILE_PATH, 'r') as f:
-        s = f.read().strip()
-    return s
+    return read_config_file()['default_editor']
 
 
 def set_default_editor(new_editor):
-    with open(DEFAULT_EDITOR_FILE_PATH, 'w') as f:
-        f.write(new_editor)
+    config_file = read_config_file()
+    config_file['default_editor'] = new_editor
+    write_to_config_file(new_editor)
 
 
 class Project(object):
