@@ -3,7 +3,7 @@ import click
 import subprocess
 from .config_file import get_paths, add_to_paths
 from .utils import colorize, validate_multi_value_options
-from .projects import get_default_editor, set_default_editor, find_all_projects, Project
+from .projects import get_default_editor, set_default_editor, find_all_projects
 
 
 @click.command()
@@ -33,7 +33,7 @@ def cli(command, value, add_path, new_editor, include_dir, exclude_dir):
     # Adding include_dirs
     for include in validate_multi_value_options(include_dir):
         for prj_dir in os.listdir(include):
-            projects.append(Project(prj_dir, os.path.join(include, prj_dir)))
+            projects.append((prj_dir, os.path.join(include, prj_dir)))
 
     for path in paths:
         for project in find_all_projects(path, validate_multi_value_options(exclude_dir)):
@@ -42,7 +42,7 @@ def cli(command, value, add_path, new_editor, include_dir, exclude_dir):
     # Removing duplicates
     projects = list(set(projects))
 
-    projects_names = '\n'.join(sorted([colorize(projects[x].name, 'green')+' '*(len(sorted([x.name for x in projects], key=lambda x: len(x), reverse=True)[0]+' ')-len(projects[x].name))+colorize(projects[x].path, 'blue') for x, _ in enumerate(projects)]))
+    projects_names = '\n'.join(sorted([colorize(projects[x][0], 'green')+' '*(len(sorted([x[0] for x in projects], key=lambda x: len(x), reverse=True)[0]+' ')-len(projects[x][0]))+colorize(projects[x][1], 'blue') for x, _ in enumerate(projects)]))
 
     fzf_args = ["--ansi", "--height 70%", "--reverse", "--no-hscroll", "--border", "--margin=1", "--padding=1", "--color bg:#222222"]
     if value:

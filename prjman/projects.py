@@ -7,7 +7,7 @@ def find_all_projects(path, ignore):
     projects_paths = _scan_for_projects(path, ignores)
     projects = []
     for prj in projects_paths:
-        projects.append(Project(prj.split('/')[-1], prj))
+        projects.append((prj.split('/')[-1], prj))
     return projects
 
 
@@ -30,24 +30,3 @@ def set_default_editor(new_editor):
     config_file = read_config_file()
     config_file['default_editor'] = new_editor
     write_to_config_file(new_editor)
-
-
-class Project(object):
-    def __init__(self, name: str, path: str):
-        self.NAME = name
-        self._path = path
-
-    def __repr__(self) -> str:
-        return f"Project(name={self.name}, path={self.path})"
-
-    @property
-    def name(self):
-        return self.NAME
-
-    @property
-    def path(self):
-        return self._path
-
-    @path.setter
-    def path(self, path):
-        self._path = path
