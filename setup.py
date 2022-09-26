@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 from prjman.const import INITIAL_SHELLRC_STRING, INITIATED_SHELLRC_STRING
 from prjman.utils import change_items_index, get_shellrc_file
 
-VERSION = "0.2.5"
+VERSION = "0.2.6"
 
 
 def check_for_command_in_shellrc():
