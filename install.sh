@@ -12,7 +12,12 @@ if [[ ! "$(alias prjman)" == "" || ! "$(type prjman)" == *"not found"* ]];then
     echo "prjman has not been uninstalled properly and it still exists in your shellrc file.\nplease uninstall it and try again."
     exit 1
 fi
-pip install . > /dev/null
+
+if [[ "$1" == "develop" ]]; then
+    pip install --editable . > /dev/null
+else
+	pip install . > /dev/null
+fi
 
 
 cat $rc
