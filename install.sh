@@ -16,7 +16,7 @@ fi
 if [[ "$1" == "develop" ]]; then
     pip install --editable . > /dev/null
 else
-	pip install . > /dev/null
+    pip install . > /dev/null
 fi
 
 
