@@ -47,7 +47,7 @@ def cli(command, value, add_path, new_editor, include_dir, exclude_dir):
     projects = list(set(projects))
 
     # If you think this is trash code you are trash
-    projects_names = '\n'.join(sorted([colorize(projects[x][0], 'green')+' '*(len(sorted([x[0] for x in projects], key=lambda x: len(x), reverse=True)[0]+' ')-len(projects[x][0]))+colorize(projects[x][1], 'blue') for x, _ in enumerate(projects)]))
+    projects_names = '\n'.join(sorted([colorize(projects[x][0], 'green')+'   '+' '*(len(sorted([x[0] for x in projects], key=lambda x: len(x), reverse=True)[0]+' ')-len(projects[x][0]))+colorize(projects[x][1], 'blue') for x, _ in enumerate(projects)]))
 
     fzf_args = [
         "--ansi",
