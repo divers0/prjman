@@ -3,6 +3,8 @@ import os
 CONFIG_FILE_PATH = os.path.join(os.path.expanduser("~"), ".config", "prjman")
 
 CONTENTS_THAT_SUGGEST_IS_A_PROJECT_DIRECTORY = [
+    ".prjman",
+    ".projman",
     ".git",
     ".gitignore",
     "READNE.md",

@@ -74,6 +74,12 @@ def check_for_command_in_shellrc():
             )
         else:
             shellrc_file += INITIATED_SHELLRC_STRING
+        # TODO: open the shell rc file with 'a' mode so that
+        # it would append to the file rather than writing
+        # the whole thing (although there is not much of a
+        # difference since i have to read it anyway to check if
+        # the text is inside. in other words i'm too lazy to try
+        # something that i haven't tried before and it may cause bugs.)
         with open(shellrc_file_path, "w") as f:
             f.write(shellrc_file)
 
